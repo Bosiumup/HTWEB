@@ -17,7 +17,7 @@
             }
     ?>
 <div class="container-detail-user">
-    <form method="post" action="index.php?page=detail_User" enctype="multipart/form-data">
+    <form method="post" action="?page=detail_User" enctype="multipart/form-data">
         <!-- Hiển thị avatar người dùng -->
         <img style="width: 50px; height: 50px;" src="<?php echo $avt_url; ?>" alt="Avatar">
         <label for="avatar">Hình ảnh đại diện:</label>
@@ -51,7 +51,7 @@
         }
     ?>
 
-    <form action="index.php?page=log_out_User" method="post">
+    <form action="?page=log_out_User" method="post">
         <button type="submit" name="logout">Logout</button>
     </form>
 </div>

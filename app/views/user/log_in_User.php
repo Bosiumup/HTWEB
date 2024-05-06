@@ -1,7 +1,7 @@
 <div class="container-register">
     <div class="title">Login</div>
     <div class="content">
-        <form action="index.php?page=log_in_User" method="post">
+        <form action="?page=log_in_User" method="post">
             <div class="user-details">
                 <div class="input-box">
                     <span class="details">Username</span>
@@ -16,7 +16,7 @@
                 <input name="login" type="submit">
             </div>
         </form>
-        <a href="index.php?page=register_User">Register now</a>
+        <a href="?page=register_User">Register now</a>
     </div>
 </div>
 
@@ -38,23 +38,23 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["login"])) {
                 $_SESSION['user_name'] = $_POST['username'];
                 // Chuyển hướng đến trang admin
                 // header("Location: admin.php");
-                header("Location: index.php?page=detail_User");
+                header("Location: ?page=detail_User");
             } 
             elseif ($user_data["role"] == "1") {
                 $_SESSION['user_name'] = $_POST['username'];
                 // Chuyển hướng đến trang detailUser.php
-                header("Location: index.php?page=detail_User");
+                header("Location: ?page=detail_User");
             }
         } else {
             echo "<script>
                       alert('Password incorrect');
-                        window.location = 'index.php?page=log_in_User';
+                        window.location = '?page=log_in_User';
                     </script>";
         }
     } else {
         echo "<script>
                       alert('Username does not exist');
-                        window.location = 'index.php?page=log_in_User';
+                        window.location = '?page=log_in_User';
                     </script>";
     }
 }

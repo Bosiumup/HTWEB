@@ -1,6 +1,6 @@
 <div class="main-content">
-    <a href="index.php?page=register_User" class="register-form">USER REGISTER</a>
-    <a href="index.php?page=log_in_User" class="login-form">USER LOGIN</a>
+    <a href="?page=register_User" class="register-form">USER REGISTER</a>
+    <a href="?page=log_in_User" class="login-form">USER LOGIN</a>
 </div>
 <style>
 .main-content a {

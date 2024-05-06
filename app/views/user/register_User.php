@@ -1,7 +1,7 @@
 <div class="container-register">
     <div class="title">Register</div>
     <div class="content">
-        <form action="index.php?page=register_User" method="post">
+        <form action="?page=register_User" method="post">
             <div class="user-details">
                 <div class="input-box">
                     <span class="details">Username</span>
@@ -48,7 +48,7 @@
                 <input name="register" type="submit">
             </div>
         </form>
-        <a href="index.php?page=log_in_User">Login now</a>
+        <a href="?page=log_in_User">Login now</a>
     </div>
 </div>
 
@@ -75,7 +75,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["register"])) {
     if ($check_result->num_rows > 0) {
         echo "<script>
                       alert('Username combination already exists');
-                        window.location = 'index.php?page=register_User';
+                        window.location = '?page=register_User';
                     </script>";
     } else {
         if (password_verify($confirm_password, $password)) {
@@ -84,13 +84,13 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["register"])) {
             if ($conn->query($sql)) {
                 echo "<script>
                       alert('New account successfully');
-                        window.location = 'index.php?page=log_in_User';
+                        window.location = '?page=log_in_User';
                     </script>";
             }
         } else {
             echo "<script>
                       alert('Password and Confirm Password do not match');
-                        window.location = 'index.php?page=register_User';
+                        window.location = '?page=register_User';
                     </script>";
         }
     }
