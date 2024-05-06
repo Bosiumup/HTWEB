@@ -4,6 +4,6 @@ if (isset($_POST['logout'])) {
     session_destroy();
 
     // Chuyển hướng người dùng về trang main.php
-    header("Location: ?page=main");
+    header("Location: ?");
     exit;
 }
