@@ -16,7 +16,7 @@
             }
     ?>
 <div class="container-detail-user">
-    <form method="post" action="?page=detail_User">
+    <form method="post" action="?page=detail_data_User">
         <!-- Hiển thị các trường thông tin người dùng -->
         <label for="username">Username:</label>
         <input type="text" name="username" value="<?php echo $username; ?>" readonly><br><br>
@@ -41,8 +41,4 @@
     <?php
         }
     ?>
-
-    <form action="?page=log_out_User" method="post">
-        <button type="submit" name="logout">Logout</button>
-    </form>
 </div>

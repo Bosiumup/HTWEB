@@ -1,7 +1,6 @@
 <?php
-use Cloudinary\Api\Upload\UploadApi;
 if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["update_data"])) {
-    // Lấy dữ liệu từ form và xử lý ảnh
+    // Lấy dữ liệu từ form 
     $username = $_SESSION['user_name'];
     $name = $_POST["name"];
     $gender = $_POST["gender"];
@@ -12,7 +11,10 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["update_data"])) {
     $sql_update_data = "UPDATE users SET name = '$name', gender = '$gender', birth_year = '$birth_year', hometown = '$hometown' WHERE username = '$username'";
 
     if ($conn->query($sql_update_data) === TRUE) {
-        echo "Cập nhật thông tin người dùng thành công.";
+        echo "<script>
+                      alert('Cập nhật thông tin người dùng thành công.');
+                        window.location = '?page=detail_User';
+                    </script>";
     } else {
         echo "Lỗi: " . $conn->error;
     }

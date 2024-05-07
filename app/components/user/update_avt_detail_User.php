@@ -1,6 +1,7 @@
 <?php
 use Cloudinary\Api\Upload\UploadApi;
 if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["update_avt"])) {
+    $username = $_SESSION['user_name'];
     // Xử lý tải lên và lưu trữ hình ảnh vào thư mục tạm
     $newAvatar = $_FILES['avatar'];
     // Tải lên hình ảnh lên Cloudinary

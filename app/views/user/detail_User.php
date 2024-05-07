@@ -41,8 +41,8 @@
     <label for="hometown">Hometown:</label>
     <input type="text" name="hometown" value="<?php echo $hometown; ?>" readonly><br><br>
 
-    <a href="?page=detail_data_User" class="register-form">Cập nhật thông tin</a>
-    <a href="?page=detail_pass_User" class="login-form">Đổi mật khẩu</a>
+    <a href="?page=detail_data_User" class="">Cập nhật thông tin</a>
+    <a href="?page=detail_pass_User" class="">Đổi mật khẩu</a>
     <?php
         }
     ?>
