@@ -18,12 +18,65 @@
 <div class="container-detail-user">
     <form method="post" action="?page=detail_User" enctype="multipart/form-data">
         <!-- Hiển thị avatar người dùng -->
-        <img style="width: 50px; height: 50px;" src="<?php echo $avt_url; ?>" alt="Avatar">
+        <div class="file-upload">
+            <input type="file" id="avatar" name="avatar">
+            <img src="<?php echo $avt_url; ?>" style="width: 300px; height: 300px;" id="avatar-preview" alt="Avatar">
+        </div>
+        <button type="submit" name="update_avt">Cập nhật</button></br>
         <label for="avatar">Hình ảnh đại diện:</label>
-        <input type="file" id="avatar" name="avatar">
-
-        <button type="submit" name="update_avt">Cập nhật</button>
     </form>
+    <style>
+    .file-upload {
+        display: inline-block;
+        position: relative;
+        width: 300px;
+        height: 300px;
+        border: 1px solid #000;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+
+    .file-upload input[type='file'] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .file-upload::before {
+        content: 'Tải ảnh lên';
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        font-size: 24px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .file-upload:hover::before {
+        opacity: 1;
+    }
+    </style>
+    <script>
+    document.getElementById('avatar').addEventListener('change', function() {
+        var file = this.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(e) {
+            document.getElementById('avatar-preview').src = e.target.result;
+        }
+    });
+    </script>
 
     <!-- Hiển thị các trường thông tin người dùng -->
     <label for="username">Username:</label>

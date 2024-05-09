@@ -4,8 +4,8 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["update_avt"])) {
     $username = $_SESSION['user_name'];
     // Xử lý tải lên và lưu trữ hình ảnh vào thư mục tạm
     $newAvatar = $_FILES['avatar'];
-    // Tải lên hình ảnh lên Cloudinary
-    $data = (new UploadApi())->upload($newAvatar['tmp_name']);
+    // Tải lên hình ảnh lên Cloudinary với thư mục QLHV trên cloud
+    $data = (new UploadApi())->upload($newAvatar['tmp_name'], ['folder' => 'QLHV']);
     // Lưu URL và Public ID vào cơ sở dữ liệu người dùng
     $url = $data['secure_url'];
     $publicId = $data['public_id'];
