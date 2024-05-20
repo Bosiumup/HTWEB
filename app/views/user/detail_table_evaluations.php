@@ -86,7 +86,8 @@ tr:last-child td {
                     $username = $_SESSION['user_name'];
                     $sql = "SELECT * FROM standards s, detail_evaluation de, evaluations e WHERE s.standard_id = de.standard_id AND de.evaluation_id = e.evaluation_id AND e.username = '$username'";
                     $result = mysqli_query($conn, $sql);
-
+                    $row_status = mysqli_fetch_assoc($result);
+                    if (mysqli_num_rows($result) > 0) {
                     // Hiển thị danh sách tiêu chuẩn
                     while ($row = mysqli_fetch_assoc($result)) {
                         ?>
@@ -120,13 +121,58 @@ tr:last-child td {
                 </tr>
                 <?php
                     }
+                }
+                else {
+                    $sql = "SELECT * FROM standards";
+                    $result = mysqli_query($conn, $sql);
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        ?>
+                <tr>
+                    <td>
+                        <input type="hidden" name="standard_id[]" value="<?php echo $row['standard_id']; ?>">
+                        <span><?php echo $row['standard_id']; ?></span>
+                    </td>
+                    <td><?php echo $row['standard_name']; ?></td>
+                    <td><?php echo $row['points']; ?></td>
+                    <td>
+                        <select class="select" name="user_ratings[]">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                        </select>
+                    </td>
+                    <td>
+                        <!-- <span><?php echo $row['admin_rating']; ?></span> -->
+                    </td>
+                </tr>
+                <?php
+                    }
+                }
                 ?>
             </tbody>
         </table>
 
+
         <div class="button-container">
+            <?php
+    if ($row_status) {
+        if ($row_status['status'] == "Đã đánh giá" || $row_status['status'] == "Đã xem") {
+            ?>
+            <button name="sendEvaluation" type="submit" class="button disabled" disabled>Gửi đánh giá</button>
+            <?php
+        } else {
+            ?>
             <input type="hidden" name="statusEvaluation" value="Đã gửi">
             <button name="sendEvaluation" type="submit" class="button">Gửi đánh giá</button>
+            <?php
+        }
+    }
+    else {
+        ?>
+            <input type="hidden" name="statusEvaluation" value="Đã gửi">
+            <button name="sendEvaluation" type="submit" class="button">Gửi đánh giá</button>
+            <?php
+    }
+    ?>
         </div>
     </form>
 </div>
