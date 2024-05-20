@@ -47,14 +47,29 @@ tr:last-child td {
     font-size: 16px;
 }
 
+.disabled {
+    background-color: #999 !important;
+    border: none;
+    cursor: default !important;
+}
+
 .button:hover {
     background-color: #45a049;
+}
+
+.disabled:hover {
+    background-color: transparent;
+}
+
+.select {
+    padding: 0 10px;
+    font-size: medium;
 }
 </style>
 
 <div class="container">
     <h2>Bảng đánh giá tiêu chuẩn</h2>
-    <form method="post" action="process_evaluation.php">
+    <form method="post" action="?page=detail_table_evaluations">
         <table>
             <thead>
                 <tr>
@@ -68,7 +83,8 @@ tr:last-child td {
             <tbody>
                 <?php
                     // Truy vấn danh sách tiêu chuẩn
-                    $sql = "SELECT * FROM standards";
+                    $username = $_SESSION['user_name'];
+                    $sql = "SELECT * FROM standards s, detail_evaluation de, evaluations e WHERE s.standard_id = de.standard_id AND de.evaluation_id = e.evaluation_id AND e.username = '$username'";
                     $result = mysqli_query($conn, $sql);
 
                     // Hiển thị danh sách tiêu chuẩn
@@ -82,13 +98,24 @@ tr:last-child td {
                     <td><?php echo $row['standard_name']; ?></td>
                     <td><?php echo $row['points']; ?></td>
                     <td>
-                        <select name="user_ratings[]">
-                            <option value="0.5">5</option>
-                            <option value="1">10</option>
+                        <?php 
+                            if($row['status'] == "Đã đánh giá" || $row['status'] == "Đã xem") {
+                                ?>
+                        <span><?php echo $row['user_rating']; ?></span>
+                        <?php        
+                            }
+                            else {
+                                ?>
+                        <select class="select" name="user_ratings[]">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
                         </select>
+                        <?php
+                            }
+                        ?>
                     </td>
                     <td>
-                        <!-- <span><?php echo $row['admin_rating']; ?></span> -->
+                        <span><?php echo $row['admin_rating']; ?></span>
                     </td>
                 </tr>
                 <?php
@@ -98,7 +125,32 @@ tr:last-child td {
         </table>
 
         <div class="button-container">
-            <button type="submit" class="button">Gửi đánh giá</button>
+            <input type="hidden" name="statusEvaluation" value="Đã gửi">
+            <button name="sendEvaluation" type="submit" class="button">Gửi đánh giá</button>
         </div>
     </form>
 </div>
+
+<?php 
+    if (isset($_POST['sendEvaluation'])) {
+        $evaluation_id = (int) sprintf('%u', hexdec(substr(uniqid(), 8, 13)));
+        $username = $_SESSION['user_name'];
+        $status = $_POST['statusEvaluation'];
+        $sql = "INSERT INTO evaluations (evaluation_id, username, status) values ('$evaluation_id', '$username', '$status')";
+        $re_insert_evaluation = $conn->query($sql);
+        if($re_insert_evaluation) {
+            for ($i = 0; $i < count($_POST['standard_id']); $i++) {
+                $standard_id = $_POST['standard_id'][$i];
+                $user_ratings = $_POST['user_ratings'][$i];
+                $sql = "INSERT INTO detail_evaluation (evaluation_id, standard_id, user_rating) values ('$evaluation_id', '$standard_id', '$user_ratings')";
+                $re_insert_detail_evaluation = $conn->query($sql);
+                }
+                if($re_insert_detail_evaluation) {
+                    echo "<script>
+                            alert('Send evaluation success');
+                            window.location = '?page=detail_table_evaluations';
+                        </script>";
+                }
+            }
+    }
+?>
