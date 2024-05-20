@@ -36,12 +36,13 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["login"])) {
         if (password_verify($password, $user_data['password'])) {
             if ($user_data["role"] == "0") {
                 $_SESSION['user_name'] = $_POST['username'];
+                $_SESSION['user_name_role'] = "0";
                 // Chuyển hướng đến trang admin
-                // header("Location: admin.php");
-                header("Location: ?page=detail_User");
+                header("Location: admin.php");
             } 
             elseif ($user_data["role"] == "1") {
                 $_SESSION['user_name'] = $_POST['username'];
+                $_SESSION['user_name_role'] = "1";
                 // Chuyển hướng đến trang detailUser.php
                 header("Location: ?page=detail_User");
             }

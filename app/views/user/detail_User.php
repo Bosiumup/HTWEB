@@ -96,6 +96,7 @@
 
     <a href="?page=detail_data_User" class="">Cập nhật thông tin</a>
     <a href="?page=detail_pass_User" class="">Đổi mật khẩu</a>
+    <a href="?page=detail_table_evaluations" class="">Đánh giá tiêu chuẩn</a>
     <?php
         }
     ?>

@@ -74,9 +74,9 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["register"])) {
 
     if ($check_result->num_rows > 0) {
         echo "<script>
-                      alert('Username combination already exists');
-                        window.location = '?page=register_User';
-                    </script>";
+                alert('Username combination already exists');
+                window.location = '?page=register_User';
+            </script>";            
     } else {
         if (password_verify($confirm_password, $password)) {
             $sql = "INSERT INTO users (username, password, name, gender, birth_year, hometown, role) values ('$user_name', '$password', '$name', '$gender', '$birth_year', '$hometown', '$role')";
