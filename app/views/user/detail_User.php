@@ -14,6 +14,7 @@
                 $birth_year = $row["birth_year"];
                 $hometown = $row["hometown"];
             }
+        }
     ?>
 <div class="container-detail-user">
     <form method="post" action="?page=detail_User" enctype="multipart/form-data">
@@ -94,14 +95,14 @@
     <label for="hometown">Hometown:</label>
     <input type="text" name="hometown" value="<?php echo $hometown; ?>" readonly><br><br>
 
-    <a href="?page=detail_data_User" class="">Cập nhật thông tin</a>
-    <a href="?page=detail_pass_User" class="">Đổi mật khẩu</a>
-    <a href="?page=detail_table_evaluations" class="">Đánh giá tiêu chuẩn</a>
-    <?php
-        }
-    ?>
+
+    <a href="?page=detail_data_User">Cập nhật thông tin</a>
+    <a href="?page=detail_pass_User">Đổi mật khẩu</a>
+    <a href="?page=detail_table_evaluations">Đánh giá tiêu chuẩn</a>
+
 
     <form action="?page=log_out_User" method="post">
         <button type="submit" name="logout">Logout</button>
     </form>
+    <a href="admin.php">Về trang admin</a>
 </div>

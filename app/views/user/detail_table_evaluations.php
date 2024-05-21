@@ -86,7 +86,6 @@ tr:last-child td {
                     $username = $_SESSION['user_name'];
                     $sql = "SELECT * FROM standards s, detail_evaluation de, evaluations e WHERE s.standard_id = de.standard_id AND de.evaluation_id = e.evaluation_id AND e.username = '$username'";
                     $result = mysqli_query($conn, $sql);
-                    $row_status = mysqli_fetch_assoc($result);
                     if (mysqli_num_rows($result) > 0) {
                     // Hiển thị danh sách tiêu chuẩn
                     while ($row = mysqli_fetch_assoc($result)) {
@@ -154,7 +153,9 @@ tr:last-child td {
 
         <div class="button-container">
             <?php
-    if ($row_status) {
+           $sql = "SELECT * FROM standards s, detail_evaluation de, evaluations e WHERE s.standard_id = de.standard_id AND de.evaluation_id = e.evaluation_id AND e.username = '$username'";
+           $result = mysqli_query($conn, $sql);
+    if ($row_status = mysqli_fetch_assoc($result)) {
         if ($row_status['status'] == "Đã đánh giá" || $row_status['status'] == "Đã xem") {
             ?>
             <button name="sendEvaluation" type="submit" class="button disabled" disabled>Gửi đánh giá</button>
