@@ -69,6 +69,20 @@ tr:last-child td {
 
 <div class="container">
     <h2>Bảng đánh giá tiêu chuẩn</h2>
+    <?php 
+    $username = $_SESSION['user_name'];
+    $sql = "SELECT * FROM evaluations WHERE username='$username'";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $status = $row["status"];
+        ?>
+    <span>Trạng thái: <?php echo $status; ?></span>
+    <?php
+    }
+    ?>
+
     <form method="post" action="?page=detail_table_evaluations">
         <table>
             <thead>
@@ -83,7 +97,6 @@ tr:last-child td {
             <tbody>
                 <?php
                     // Truy vấn danh sách tiêu chuẩn
-                    $username = $_SESSION['user_name'];
                     $sql = "SELECT * FROM standards s, detail_evaluation de, evaluations e WHERE s.standard_id = de.standard_id AND de.evaluation_id = e.evaluation_id AND e.username = '$username'";
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
@@ -153,9 +166,10 @@ tr:last-child td {
 
         <div class="button-container">
             <?php
-           $sql = "SELECT * FROM standards s, detail_evaluation de, evaluations e WHERE s.standard_id = de.standard_id AND de.evaluation_id = e.evaluation_id AND e.username = '$username'";
-           $result = mysqli_query($conn, $sql);
-    if ($row_status = mysqli_fetch_assoc($result)) {
+           $sql = "SELECT * FROM evaluations WHERE username = '$username'";
+           $result_status = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result_status) > 0) {
+        $row_status = mysqli_fetch_assoc($result_status);
         if ($row_status['status'] == "Đã đánh giá" || $row_status['status'] == "Đã xem") {
             ?>
             <button name="sendEvaluation" type="submit" class="button disabled" disabled>Gửi đánh giá</button>
