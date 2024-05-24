@@ -1,3 +1,20 @@
+<?php 
+if (isset($_SESSION["user_name"])) {
+    $username = $_SESSION["user_name"];
+    $sql = "SELECT * FROM users WHERE username='$username'";
+    $check_login = $conn->query($sql);
+    if ($check_login->num_rows > 0) {
+        $account_data = $check_login->fetch_assoc();
+        if ($account_data["role"] == "0") {
+            header("location: admin.php");
+        }
+        else {
+            header("location: user.php");
+        }
+    }
+}
+?>
+
 <div class="container-register">
     <div class="title">Login</div>
     <div class="content">
@@ -44,19 +61,13 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["login"])) {
                 $_SESSION['user_name'] = $_POST['username'];
                 $_SESSION['user_name_role'] = "1";
                 // Chuyển hướng đến trang detailUser.php
-                header("Location: ?page=detail_User");
+                header("Location: user.php");
             }
         } else {
-            echo "<script>
-                      alert('Password incorrect');
-                        window.location = '?page=log_in_User';
-                    </script>";
+            header("Location: ?");
         }
     } else {
-        echo "<script>
-                      alert('Username does not exist');
-                        window.location = '?page=log_in_User';
-                    </script>";
+        header("Location: ?");
     }
 }
 ?>

@@ -1,5 +1,7 @@
 <?php
     require "app/components/user/update_avt_detail_User.php"; 
+    require "app/components/log_out.php";
+    
         if (isset($_SESSION['user_name'])) { 
             // Lấy dữ liệu cũ từ cơ sở dữ liệu
             $username = $_SESSION['user_name']; // Đặt username của người dùng cần cập nhật
@@ -13,6 +15,7 @@
                 $gender = $row["gender"];
                 $birth_year = $row["birth_year"];
                 $hometown = $row["hometown"];
+                $role = $row["role"];
             }
         }
     ?>
@@ -95,14 +98,25 @@
     <label for="hometown">Hometown:</label>
     <input type="text" name="hometown" value="<?php echo $hometown; ?>" readonly><br><br>
 
-
     <a href="?page=detail_data_User">Cập nhật thông tin</a>
     <a href="?page=detail_pass_User">Đổi mật khẩu</a>
+    <?php 
+        if($role == "1") {
+            ?>
     <a href="?page=detail_table_evaluations">Đánh giá tiêu chuẩn</a>
-
-
-    <form action="?page=log_out_User" method="post">
+    <form action="user.php" method="post">
         <button type="submit" name="logout">Logout</button>
     </form>
+    <?php
+        }
+        else {
+            ?>
     <a href="admin.php">Về trang admin</a>
+    <?php
+        }
+    ?>
+
+
+
+
 </div>

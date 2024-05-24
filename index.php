@@ -16,14 +16,14 @@ require "app/config/db.php";
 </head>
 
 <body>
-    <main class="Membership_Management_app">
+    <main>
         <?php
             if (isset($_GET["page"])) {
               $p = $_GET["page"]; //pages/$p."php"
-              require "app/views/user/".$p.".php";
+              require "app/views/".$p.".php";
             } 
             else {
-              require "app/views/user/layouts/main.php";
+              require "app/views/log_in_User.php";
             }
           ?>
     </main>
