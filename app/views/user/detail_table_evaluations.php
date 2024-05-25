@@ -1,13 +1,28 @@
 <style>
 /* Thiết kế giao diện */
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+    height: 100vh;
+    padding: 20px 0;
 }
 
-h2 {
-    text-align: center;
+.wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+h1 {
+    padding: 20px 0;
+}
+
+.container>span {
+    display: block;
+    font-size: large;
+    margin-bottom: 5px;
+}
+
+.container>span span {
+    color: #fffa00;
 }
 
 table {
@@ -64,11 +79,12 @@ tr:last-child td {
 .select {
     padding: 0 10px;
     font-size: medium;
+    border-radius: 10px;
 }
 </style>
 
 <div class="container">
-    <h2>Bảng đánh giá tiêu chuẩn</h2>
+    <h1>Bảng đánh giá tiêu chuẩn</h1>
     <?php 
     $username = $_SESSION['user_name'];
     $sql = "SELECT * FROM evaluations WHERE username='$username'";
@@ -77,91 +93,96 @@ tr:last-child td {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $status = $row["status"];
+        $pass = $row["pass"];
+        $sql_total = "SELECT SUM(admin_rating) AS total_admin_rating FROM detail_evaluation de, evaluations e WHERE e.evaluation_id = de.evaluation_id AND username='$username'";
+        $result_total = $conn->query($sql_total);
+        if ($result_total->num_rows > 0) {
+            $row_total = $result_total->fetch_assoc();
+            $total = $row_total["total_admin_rating"];
+        }
         ?>
-    <span>Trạng thái: <?php echo $status; ?></span>
+    <span>Trạng thái: <span><?php echo $status; ?></span> </span>
+    <span>Số điểm: <span><?php echo $total; ?></span> </span>
+    <span>Kết quả: <span><?php echo $pass; ?></span> </span>
     <?php
+        
     }
     ?>
 
     <form method="post" action="?page=detail_table_evaluations">
+        <?php
+        // Truy vấn danh sách tiêu chuẩn
+        $standard_sql = "SELECT * FROM standards";
+        $standard_result = mysqli_query($conn, $standard_sql);
+        if (mysqli_num_rows($standard_result) > 0) {
+            while ($standard_row = mysqli_fetch_assoc($standard_result)) {
+                ?>
+
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Tiêu chuẩn</th>
-                    <th>Điểm số</th>
+                    <th><?php echo $standard_row['standard_name']; ?></th>
+                    <th>Điểm số: <?php echo $standard_row['points']; ?></th>
                     <th>Đánh giá của Hội viên</th>
                     <th>Đánh giá của Admin</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                    // Truy vấn danh sách tiêu chuẩn
-                    $sql = "SELECT * FROM standards s, detail_evaluation de, evaluations e WHERE s.standard_id = de.standard_id AND de.evaluation_id = e.evaluation_id AND e.username = '$username'";
-                    $result = mysqli_query($conn, $sql);
-                    if (mysqli_num_rows($result) > 0) {
-                    // Hiển thị danh sách tiêu chuẩn
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        ?>
+                            // Truy vấn danh sách tiêu chí cho tiêu chuẩn
+                            $criteria_sql = "SELECT * FROM criteria c, detail_evaluation de, evaluations e WHERE e.evaluation_id = de.evaluation_id AND c.criteria_id = de.criteria_id AND e.username = '$username' AND c.standard_id = " . $standard_row['standard_id'];
+                            $criteria_result = mysqli_query($conn, $criteria_sql);
+                            if (mysqli_num_rows($criteria_result) > 0) {
+                                while ($criteria_row = mysqli_fetch_assoc($criteria_result)) {
+                                    ?>
                 <tr>
+                    <td><?php echo $criteria_row['criteria_name']; ?></td>
+                    <td><?php echo $criteria_row['points']; ?></td>
                     <td>
-                        <input type="hidden" name="standard_id[]" value="<?php echo $row['standard_id']; ?>">
-                        <span><?php echo $row['standard_id']; ?></span>
+                        <span><?php echo $criteria_row['user_rating']; ?></span>
                     </td>
-                    <td><?php echo $row['standard_name']; ?></td>
-                    <td><?php echo $row['points']; ?></td>
                     <td>
-                        <?php 
-                            if($row['status'] == "Đã đánh giá" || $row['status'] == "Đã xem") {
-                                ?>
-                        <span><?php echo $row['user_rating']; ?></span>
-                        <?php        
+                        <span><?php echo $criteria_row['admin_rating']; ?></span>
+                    </td>
+                </tr>
+                <?php
+                                }
                             }
                             else {
-                                ?>
-                        <select class="select" name="user_ratings[]">
+                                $criteria_sql = "SELECT * FROM criteria WHERE standard_id = " . $standard_row['standard_id'];
+                            $criteria_result = mysqli_query($conn, $criteria_sql);
+                            if (mysqli_num_rows($criteria_result) > 0) {
+                                while ($criteria_row = mysqli_fetch_assoc($criteria_result)) {
+                                    ?>
+                <tr>
+                    <td><?php echo $criteria_row['criteria_name']; ?></td>
+                    <td><?php echo $criteria_row['points']; ?></td>
+                    <td>
+                        <input type="hidden" name="standard_id[]" value="<?php echo $criteria_row['standard_id']; ?>">
+                        <input type="hidden" name="criteria_id[]" value="<?php echo $criteria_row['criteria_id']; ?>">
+                        <select class="select" name="user_ratings[]" required>
+                            <option value="">Chọn điểm</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
                             <option value="5">5</option>
-                            <option value="10">10</option>
                         </select>
-                        <?php
+                    </td>
+                    <td></td>
+                </tr>
+                <?php
+                                }
+                            }
+                        
                             }
                         ?>
-                    </td>
-                    <td>
-                        <span><?php echo $row['admin_rating']; ?></span>
-                    </td>
-                </tr>
-                <?php
-                    }
-                }
-                else {
-                    $sql = "SELECT * FROM standards";
-                    $result = mysqli_query($conn, $sql);
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        ?>
-                <tr>
-                    <td>
-                        <input type="hidden" name="standard_id[]" value="<?php echo $row['standard_id']; ?>">
-                        <span><?php echo $row['standard_id']; ?></span>
-                    </td>
-                    <td><?php echo $row['standard_name']; ?></td>
-                    <td><?php echo $row['points']; ?></td>
-                    <td>
-                        <select class="select" name="user_ratings[]">
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                        </select>
-                    </td>
-                    <td>
-                        <!-- <span><?php echo $row['admin_rating']; ?></span> -->
-                    </td>
-                </tr>
-                <?php
-                    }
-                }
-                ?>
             </tbody>
         </table>
+        <?php
+            }
+        }
+        ?>
 
 
         <div class="button-container">
@@ -169,17 +190,10 @@ tr:last-child td {
            $sql = "SELECT * FROM evaluations WHERE username = '$username'";
            $result_status = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result_status) > 0) {
-        $row_status = mysqli_fetch_assoc($result_status);
-        if ($row_status['status'] == "Đã đánh giá" || $row_status['status'] == "Đã xem") {
             ?>
             <button name="sendEvaluation" type="submit" class="button disabled" disabled>Gửi đánh giá</button>
             <?php
-        } else {
-            ?>
-            <input type="hidden" name="statusEvaluation" value="Đã gửi">
-            <button name="sendEvaluation" type="submit" class="button">Gửi đánh giá</button>
-            <?php
-        }
+        
     }
     else {
         ?>
@@ -200,10 +214,11 @@ tr:last-child td {
         $sql = "INSERT INTO evaluations (evaluation_id, username, status) values ('$evaluation_id', '$username', '$status')";
         $re_insert_evaluation = $conn->query($sql);
         if($re_insert_evaluation) {
-            for ($i = 0; $i < count($_POST['standard_id']); $i++) {
+            for ($i = 0; $i < count($_POST['criteria_id']); $i++) {
                 $standard_id = $_POST['standard_id'][$i];
+                $criteria_id = $_POST['criteria_id'][$i];
                 $user_ratings = $_POST['user_ratings'][$i];
-                $sql = "INSERT INTO detail_evaluation (evaluation_id, standard_id, user_rating) values ('$evaluation_id', '$standard_id', '$user_ratings')";
+                $sql = "INSERT INTO detail_evaluation (evaluation_id, standard_id, criteria_id, user_rating) values ('$evaluation_id', '$standard_id', '$criteria_id', '$user_ratings')";
                 $re_insert_detail_evaluation = $conn->query($sql);
                 }
                 if($re_insert_detail_evaluation) {
