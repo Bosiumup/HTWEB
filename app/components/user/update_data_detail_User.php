@@ -12,8 +12,8 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["update_data"])) {
 
     if ($conn->query($sql_update_data) === TRUE) {
         echo "<script>
-                      alert('Cập nhật thông tin người dùng thành công.');
-                        window.location = '?page=detail_User';
+                      alert('Cập nhật thành công.');
+                        window.location = '?';
                     </script>";
     } else {
         echo "Lỗi: " . $conn->error;

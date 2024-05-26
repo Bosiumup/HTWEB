@@ -19,3 +19,22 @@ a {
   text-decoration: none;
   color          : #000;
 }
+
+.text-start {
+  text-align: start !important;
+}
+
+.cursor {
+  cursor: initial !important;
+}
+
+.d-flex {
+  display       : flex;
+  flex-direction: column;
+}
+
+.mb {
+  font-size    : large !important;
+  margin-bottom: 20px !important;
+  border       : none !important;
+}

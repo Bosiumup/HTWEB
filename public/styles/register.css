@@ -68,6 +68,7 @@ form .gender-details .gender-title {
 form input[type="radio"] {
     width : 20px;
     height: 20px;
+    margin: 0 10px;
 }
 
 form .gender-details span {
@@ -96,4 +97,10 @@ form .button input {
 form .button input:hover {
     /* transform: scale(0.99); */
     background: linear-gradient(-135deg, #71b7e6, #9b59b6);
+}
+
+.container-register .content a {
+    display   : inline-block;
+    width     : 100%;
+    text-align: end;
 }

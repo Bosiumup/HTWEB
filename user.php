@@ -13,6 +13,7 @@ require "app/config/db.php";
     <title>Học phần Hệ Thống Web</title>
     <link rel="stylesheet" href="public/styles/base.css">
     <link rel="stylesheet" href="public/styles/register.css">
+    <link rel="stylesheet" href="public/styles/inf_user.css">
 </head>
 
 <body>

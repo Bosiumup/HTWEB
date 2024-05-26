@@ -22,8 +22,8 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["update_pass"])) {
 
                 if ($conn->query($sql_update_data) === TRUE) {
                     echo "<script>
-                      alert('Cập nhật pass người dùng thành công.');
-                        window.location = '?page=log_in_User';
+                      alert('Cập nhật thành công.');
+                        window.location = '?';
                     </script>";
                 } else {
                     echo "Lỗi: " . $conn->error;
@@ -31,14 +31,14 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["update_pass"])) {
             }
             else {
                 echo "<script>
-                      alert('Pass mới không giống nhau.');
+                      alert('Mật khẩu mới không khớp.');
                         window.location = '?page=detail_pass_User';
                     </script>";
             }
         }
         else {
             echo "<script>
-                      alert('Pass cũ không đúng.');
+                      alert('Sai mật khẩu cũ.');
                         window.location = '?page=detail_pass_User';
                     </script>";
         }

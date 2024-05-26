@@ -1,54 +1,54 @@
 <div class="container-register">
-    <div class="title">Register</div>
+    <div class="title">Đăng ký</div>
     <div class="content">
         <form action="?page=register_User" method="post">
             <div class="user-details">
                 <div class="input-box">
-                    <span class="details">Username</span>
-                    <input name="username" type="text" placeholder="Enter your Username" required>
+                    <span class="details">Tài khoản</span>
+                    <input name="username" type="text" placeholder="Tài khoản..." required>
                 </div>
                 <div class="input-box">
-                    <span class="details">Password</span>
-                    <input name="pass" type="password" placeholder="Enter your Password" required>
+                    <span class="details">Mật khẩu</span>
+                    <input name="pass" type="password" placeholder="******" required>
                 </div>
                 <div class="input-box">
-                    <span class="details">Confirm Password</span>
-                    <input name="confirm-pass" type="password" placeholder="Enter your Confirm Password" required>
+                    <span class="details">Xác nhận mật khẩu</span>
+                    <input name="confirm-pass" type="password" placeholder="******" required>
                 </div>
                 <div class="input-box">
-                    <span class="details">Name</span>
+                    <span class="details">Tên</span>
                     <input value="<?php echo isset($_SESSION['name']) ? $_SESSION['name'] : '' ?>" name="name-user"
-                        type="text" placeholder="Enter your Name" required>
+                        type="text" placeholder="Tên..." required>
                 </div>
                 <div class="input-box">
-                    <span class="details">Birth Year</span>
+                    <span class="details">Năm sinh</span>
                     <input value="<?php echo isset($_SESSION['birth_year']) ? $_SESSION['birth_year'] : '' ?>"
-                        name="birth_year" type="number" placeholder="Enter your Birth Year" required>
+                        name="birth_year" type="number" placeholder="2003,..." required>
                 </div>
                 <div class="input-box">
-                    <span class="details">Hometown</span>
+                    <span class="details">Quê quán</span>
                     <input value="<?php echo isset($_SESSION['hometown']) ? $_SESSION['hometown'] : '' ?>"
-                        name="hometown" type="text" placeholder="Enter your Hometown" required>
+                        name="hometown" type="text" placeholder="Cần thơ,..." required>
                 </div>
             </div>
             <div class="gender-details">
-                <span class="gender-title">Gender</span>
+                <span class="gender-title">Giới tính</span>
                 <input type="radio" name="gender" value="Male"
                     <?php if (isset($_SESSION['gender']) && $_SESSION['gender'] == 'Male') echo 'checked'; ?> required>
-                <span>Male</span>
+                <span>Nam</span>
                 <input type="radio" name="gender" value="Female"
                     <?php if (isset($_SESSION['gender']) && $_SESSION['gender'] == 'Female') echo 'checked'; ?>
-                    required> <span>Female</span>
+                    required> <span>Nữ</span>
             </div>
 
             <!-- role : 1 -> user -->
             <input type="hidden" name="role" value="1">
 
             <div class="button">
-                <input name="register" type="submit">
+                <input name="register" type="submit" value="Đăng ký">
             </div>
         </form>
-        <a href="?page=log_in_User">Login now</a>
+        <a href="?page=log_in_User">Đăng nhập ngay</a>
     </div>
 </div>
 
@@ -74,7 +74,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["register"])) {
 
     if ($check_result->num_rows > 0) {
         echo "<script>
-                alert('Username combination already exists');
+                alert('Đã có tài khoản');
                 window.location = '?page=register_User';
             </script>";            
     } else {
@@ -83,15 +83,15 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["register"])) {
 
             if ($conn->query($sql)) {
                 echo "<script>
-                      alert('New account successfully');
+                        alert('Tạo tài khoản thành công');
                         window.location = '?page=log_in_User';
                     </script>";
             }
         } else {
             echo "<script>
-                      alert('Password and Confirm Password do not match');
-                        window.location = '?page=register_User';
-                    </script>";
+                    alert('Mật khẩu không khớp');
+                    window.location = '?page=register_User';
+                </script>";
         }
     }
 }

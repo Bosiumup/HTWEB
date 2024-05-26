@@ -16,24 +16,24 @@ if (isset($_SESSION["user_name"])) {
 ?>
 
 <div class="container-register">
-    <div class="title">Login</div>
+    <div class="title">Đăng nhập</div>
     <div class="content">
         <form action="?page=log_in_User" method="post">
             <div class="user-details">
                 <div class="input-box">
-                    <span class="details">Username</span>
-                    <input name="username" type="text" placeholder="Enter your Username" required>
+                    <span class="details">Tài khoản</span>
+                    <input name="username" type="text" placeholder="Tài khoản..." required>
                 </div>
                 <div class="input-box">
-                    <span class="details">Password</span>
-                    <input name="pass" type="password" placeholder="Enter your Password" required>
+                    <span class="details">Mật khẩu</span>
+                    <input name="pass" type="password" placeholder="******" required>
                 </div>
             </div>
             <div class="button">
-                <input name="login" type="submit">
+                <input name="login" type="submit" value="Đăng nhập">
             </div>
         </form>
-        <a href="?page=register_User">Register now</a>
+        <a href="?page=register_User">Đăng ký ngay</a>
     </div>
 </div>
 
@@ -60,14 +60,23 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["login"])) {
             elseif ($user_data["role"] == "1") {
                 $_SESSION['user_name'] = $_POST['username'];
                 $_SESSION['user_name_role'] = "1";
-                // Chuyển hướng đến trang detailUser.php
+                // Chuyển hướng đến trang user
                 header("Location: user.php");
             }
-        } else {
-            header("Location: ?");
+        } 
+        else {
+            echo "<script>
+                    alert('Sai mật khẩu');
+                    window.location = '?';
+                </script>";
+            // header("Location: ?");
         }
     } else {
-        header("Location: ?");
+        echo "<script>
+                alert('Không có tài khoản');
+                window.location = '?';
+            </script>";
+        // header("Location: ?");
     }
 }
 ?>

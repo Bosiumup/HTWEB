@@ -14,7 +14,10 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["update_avt"])) {
     $sql_update_data = "UPDATE users SET public_id = '$publicId', avatar_url = '$url' WHERE username = '$username'";
 
     if ($conn->query($sql_update_data) === TRUE) {
-        echo "Cập nhật thông tin người dùng thành công.";
+        echo "<script>
+                alert('Đã tải ảnh đại diện.');
+                window.location = '?';
+            </script>";
     } else {
         echo "Lỗi: " . $conn->error;
     }

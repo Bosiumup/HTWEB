@@ -6,8 +6,11 @@
     padding: 20px;
 }
 
-h2 {
+h1 {
+    font-weight: 500;
     text-align: center;
+    padding: 40px 0 20px;
+    text-transform: Uppercase;
 }
 
 table {
@@ -27,6 +30,8 @@ td {
 
 td img {
     width: 70px;
+    height: 70px;
+    border-radius: 50%;
 }
 
 tr:last-child td {
@@ -68,7 +73,7 @@ tr:last-child td {
 </style>
 
 <div class="container">
-    <h2>Bảng danh sách hội viên</h2>
+    <h1>Danh sách hội viên</h1>
     <form method="post" action="?page=list_member_Admin">
         <table>
             <thead>
