@@ -102,7 +102,7 @@ tr:last-child td {
         }
         ?>
     <span>Trạng thái: <span><?php echo $status; ?></span> </span>
-    <span>Số điểm: <span><?php echo $total; ?></span> </span>
+    <span>Số điểm: <span><?php echo $total; ?>/100</span> </span>
     <span>Kết quả: <span><?php echo $pass; ?></span> </span>
     <?php
         
