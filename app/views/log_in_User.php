@@ -22,11 +22,11 @@ if (isset($_SESSION["user_name"])) {
             <div class="user-details">
                 <div class="input-box">
                     <span class="details">Tài khoản</span>
-                    <input name="username" type="text" placeholder="Tài khoản..." required>
+                    <input name="username" type="text" placeholder="Tài khoản...">
                 </div>
                 <div class="input-box">
                     <span class="details">Mật khẩu</span>
-                    <input name="pass" type="password" placeholder="******" required>
+                    <input name="pass" type="password" placeholder="******">
                 </div>
             </div>
             <div class="button">
@@ -39,44 +39,52 @@ if (isset($_SESSION["user_name"])) {
 
 <?php
 if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["login"])) {
-    $user_name = $_POST['username'];
+    $user_name = trim($_POST['username']);
     $password = $_POST['pass'];
 
-    // Kiểm tra xem người dùng có tồn tại trong database hay không
-    $check_query = "SELECT * FROM users WHERE username = '$user_name'";
-    $check_result = $conn->query($check_query);
+    // Kiểm tra xem các trường có được để trống hay không
+    if(empty($user_name) || empty($password)){
+        echo "<script>
+                alert('Vui lòng không bỏ trống các trường dữ liệu');
+                window.location = '?page=log_in_User';
+            </script>"; 
+    } else {
+        // Kiểm tra xem người dùng có tồn tại trong database hay không
+        $check_query = "SELECT * FROM users WHERE username = '$user_name'";
+        $check_result = $conn->query($check_query);
 
-    if ($check_result->num_rows > 0) {
-        // Nếu người dùng tồn tại, lấy dữ liệu từ bản ghi đầu tiên
-        $user_data = $check_result->fetch_assoc();
-        // Nếu mật khẩu nhập vào khớp với mật khẩu từ database
-        if (password_verify($password, $user_data['password'])) {
-            if ($user_data["role"] == "0") {
-                $_SESSION['user_name'] = $_POST['username'];
-                $_SESSION['user_name_role'] = "0";
-                // Chuyển hướng đến trang admin
-                header("Location: admin.php");
+        if ($check_result->num_rows > 0) {
+            // Nếu người dùng tồn tại, lấy dữ liệu từ bản ghi đầu tiên
+            $user_data = $check_result->fetch_assoc();
+            // Nếu mật khẩu nhập vào khớp với mật khẩu từ database
+            if (password_verify($password, $user_data['password'])) {
+                if ($user_data["role"] == "0") {
+                    $_SESSION['user_name'] = $_POST['username'];
+                    $_SESSION['user_name_role'] = "0";
+                    // Chuyển hướng đến trang admin
+                    header("Location: admin.php");
+                } 
+                elseif ($user_data["role"] == "1") {
+                    $_SESSION['user_name'] = $_POST['username'];
+                    $_SESSION['user_name_role'] = "1";
+                    // Chuyển hướng đến trang user
+                    header("Location: user.php");
+                }
             } 
-            elseif ($user_data["role"] == "1") {
-                $_SESSION['user_name'] = $_POST['username'];
-                $_SESSION['user_name_role'] = "1";
-                // Chuyển hướng đến trang user
-                header("Location: user.php");
+            else {
+                echo "<script>
+                        alert('Sai mật khẩu');
+                        window.location = '?';
+                    </script>";
+                // header("Location: ?");
             }
-        } 
-        else {
+        } else {
             echo "<script>
-                    alert('Sai mật khẩu');
+                    alert('Không có tài khoản');
                     window.location = '?';
                 </script>";
             // header("Location: ?");
         }
-    } else {
-        echo "<script>
-                alert('Không có tài khoản');
-                window.location = '?';
-            </script>";
-        // header("Location: ?");
     }
 }
 ?>
