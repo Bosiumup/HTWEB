@@ -91,7 +91,7 @@ tr:last-child td {
                 <?php
                     // Truy vấn danh sách tiêu chuẩn
                     // $username = $_SESSION['user_name'];
-                    $sql = "SELECT * FROM users";
+                    $sql = "SELECT * FROM users WHERE role = '1'";
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
                     // Hiển thị danh sách hội viên
