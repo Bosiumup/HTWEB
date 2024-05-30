@@ -113,6 +113,7 @@ tr:last-child td {
                         <td><img src="<?php echo $row['avatar_url']; ?>" alt="avatar"></td>
                         <td><?php echo $row['name']; ?></td>
                         <td><?php echo $row['status']; ?></td>
+                        <td><button type="submit">Xóa</button></td>
                     </tr>
                     <?php
                     }
@@ -151,6 +152,7 @@ tr:last-child td {
                         <td><img src="<?php echo $row['avatar_url']; ?>" alt="avatar"></td>
                         <td><?php echo $row['name']; ?></td>
                         <td><?php echo $row['status']; ?></td>
+                        <td><button type="submit">Xóa</button></td>
                     </tr>
                     <?php
                     }
@@ -189,6 +191,7 @@ tr:last-child td {
                         <td><img src="<?php echo $row['avatar_url']; ?>" alt="avatar"></td>
                         <td><?php echo $row['name']; ?></td>
                         <td><?php echo $row['status']; ?></td>
+                        <td><button type="submit">Xóa</button></td>
                     </tr>
                     <?php
                     }

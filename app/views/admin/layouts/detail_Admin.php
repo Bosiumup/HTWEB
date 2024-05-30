@@ -7,7 +7,8 @@
     <h1>ADMIN</h1>
     <div class="link-user d-flex">
         <a class="mb" href="?page=list_member_Admin">DANH SÁCH HỘI VIÊN</a>
-        <a class="mb" href="?page=list_evaluation_Admin">DANH SÁCH ĐÁNH GIÁ TIÊU CHUẨN</a>
+        <a class="mb" href="?page=list_evaluation_Admin">DANH SÁCH ĐÁNH GIÁ CỦA HỘI VIÊN</a>
+        <a class="mb" href="?page=list_detail_evaluation">DANH SÁCH TIÊU CHUẨN</a>
         <a class="mb" href="?page=list_quantity_Admin">DANH SÁCH THỐNG KÊ KẾT QUẢ</a>
         <a class="mb" href="user.php">Vào trang User</a>
     </div>
