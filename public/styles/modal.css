@@ -1,0 +1,122 @@
+/* Hiển thị modal khi cần */
+.modal {
+    position        : fixed;
+    top             : 0;
+    left            : 0;
+    display         : none;
+    align-items     : center;
+    justify-content : center;
+    width           : 100%;
+    height          : 100%;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    overflow        : auto;
+    z-index         : 1;
+    /* Overlay màu đen */
+}
+
+/* Style cho modal content */
+.modal-content {
+    position        : relative;
+    text-align      : center;
+    background-color: #fefefe;
+    padding         : 25px;
+    border          : 1px solid #888;
+    width           : 35%;
+    line-height     : 35px;
+    border-radius   : 35px;
+    /* chuyển động từ trên xuống của modal */
+    animation       : modalFaceIn linear 0.15s;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px
+}
+
+/* Nút close */
+.close {
+    position   : absolute;
+    top        : 8px;
+    right      : 16px;
+    font-size  : xxx-large;
+    color      : #aaa;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color          : black;
+    text-decoration: none;
+    cursor         : pointer;
+}
+
+.modal-content label {
+    display: inline-block;
+    width  : 100%;
+    padding: 18px 0;
+}
+
+.modal-content label:focus-visible,
+.modal-content label:focus {
+    outline: none !important;
+}
+
+.modal-content label span {
+    display   : inline-block;
+    width     : 200px;
+    text-align: left;
+}
+
+.modal-content label input {
+    border-radius: 5px;
+    padding      : 5px 10px;
+    font-size    : small;
+    border       : 1px solid #888;
+    transition   : all .1s linear;
+}
+
+.modal-content label input:focus-visible {
+    border    : none;
+    outline   : none;
+    box-shadow: 0px 1px 10px 3px rgba(0, 0, 0, 0.4);
+}
+
+.modal-content label select,
+.modal-content label input {
+    width: 33.5%;
+}
+
+.modal-content label .readonly {
+    background-color: #ececec !important;
+    cursor          : default;
+}
+
+.modal-content label .select_style {
+    font-size    : medium;
+    border-radius: 5px;
+    padding      : 5px 10px;
+}
+
+.modal-content label .readonly:focus-visible {
+    background-color: #ececec !important;
+    border          : 1px solid #888 !important;
+    outline         : none !important;
+    box-shadow      : none !important;
+}
+
+.modal-content button {
+    margin-top: 20px;
+}
+
+/* animation xuất hiện từ trên xuống của modal */
+@keyframes modalFaceIn {
+    from {
+        transform: translateX(-250px);
+        opacity  : 0.3;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity  : 1;
+    }
+}

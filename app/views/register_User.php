@@ -33,11 +33,11 @@
             </div>
             <div class="gender-details">
                 <span class="gender-title">Giới tính</span>
-                <input type="radio" name="gender" value="Male"
-                    <?php if (isset($_SESSION['gender']) && $_SESSION['gender'] == 'Male') echo 'checked'; ?>>
+                <input type="radio" name="gender" value="Nam"
+                    <?php if (isset($_SESSION['gender']) && $_SESSION['gender'] == 'Nam') echo 'checked'; ?>>
                 <span>Nam</span>
-                <input type="radio" name="gender" value="Female"
-                    <?php if (isset($_SESSION['gender']) && $_SESSION['gender'] == 'Female') echo 'checked'; ?>>
+                <input type="radio" name="gender" value="Nữ"
+                    <?php if (isset($_SESSION['gender']) && $_SESSION['gender'] == 'Nữ') echo 'checked'; ?>>
                 <span>Nữ</span>
             </div>
 

@@ -14,6 +14,7 @@ require "app/config/db.php";
     <link rel="stylesheet" href="public/styles/base.css">
     <link rel="stylesheet" href="public/styles/register.css">
     <link rel="stylesheet" href="public/styles/inf_user.css">
+    <link rel="stylesheet" href="public/styles/modal.css">
 </head>
 
 <body>
