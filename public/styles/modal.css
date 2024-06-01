@@ -69,8 +69,8 @@
 
 .modal-content label input {
     border-radius: 5px;
-    padding      : 5px 10px;
-    font-size    : small;
+    padding      : 10px;
+    font-size    : medium;
     border       : 1px solid #888;
     transition   : all .1s linear;
 }
@@ -83,7 +83,7 @@
 
 .modal-content label select,
 .modal-content label input {
-    width: 33.5%;
+    width: 50%;
 }
 
 .modal-content label .readonly {

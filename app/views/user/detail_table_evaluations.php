@@ -33,6 +33,10 @@ table {
     border-radius: 10px;
 }
 
+th {
+    font-size: large;
+}
+
 th,
 td {
     padding: 15px 20px;
@@ -115,13 +119,16 @@ tr:last-child td {
         $standard_sql = "SELECT * FROM standards";
         $standard_result = mysqli_query($conn, $standard_sql);
         if (mysqli_num_rows($standard_result) > 0) {
+            $i = 0;
             while ($standard_row = mysqli_fetch_assoc($standard_result)) {
+                $i++;
                 ?>
 
         <table>
             <thead>
                 <tr>
-                    <th><?php echo $standard_row['standard_name']; ?></th>
+                    <th><?php echo '<span style="font-weight: 600;">Tiêu chuẩn ' . $i . '</span>' . ": " . $standard_row['standard_name']; ?>
+                    </th>
                     <th>Điểm số: <?php echo $standard_row['points']; ?></th>
                     <th>Đánh giá của Hội viên</th>
                     <th>Đánh giá của Admin</th>

@@ -63,7 +63,7 @@
     </div>
 
     <!-- Chuyển link và đăng xuất -->
-    <div class="link-user">
+    <div style="text-align: center;" class="link-user">
         <a href="?page=detail_data_User">Cập nhật thông tin</a>
         <a href="?page=detail_pass_User">Đổi mật khẩu</a>
         <?php 
@@ -74,7 +74,7 @@
         }
         else {
             ?>
-        <a href="admin.php">Về trang admin</a>
+        <a style="color: #ff3131;" href="admin.php">Về trang admin</a>
         <?php
         }
     ?>
