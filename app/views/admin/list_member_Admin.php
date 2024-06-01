@@ -50,6 +50,7 @@ tr:last-child td {
     border: 1px solid #45a049;
     cursor: pointer;
     font-size: 16px;
+    transition: all 0.1s linear;
 }
 
 .disabled {
@@ -59,7 +60,8 @@ tr:last-child td {
 }
 
 .button:hover {
-    background-color: #45a049;
+    opacity: 0.9 !important;
+    transform: scale(1.05);
 }
 
 .disabled:hover {
@@ -85,13 +87,14 @@ tr:last-child td {
                     <th>Năm sinh</th>
                     <th>Quê quán</th>
                     <th>Loại tài khoản</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                     // Truy vấn danh sách tiêu chuẩn
                     // $username = $_SESSION['user_name'];
-                    $sql = "SELECT * FROM users WHERE role = '1'";
+                    $sql = "SELECT * FROM users u, evaluations e WHERE u.username = e.username AND u.role = '1'";
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
                     // Hiển thị danh sách hội viên
@@ -105,41 +108,72 @@ tr:last-child td {
                     <td><?php echo $row['birth_year']; ?></td>
                     <td><?php echo $row['hometown']; ?></td>
                     <td><?php echo $row['role']; ?></td>
+                    <td>
+                        <form action="?page=list_member_Admin" method="post">
+                            <input type="hidden" name="usernameDelete" value="<?php echo $row['username'] ?>">
+                            <input type="hidden" name="evaluation_id" value="<?php echo $row['evaluation_id'] ?>">
+                            <button class="button" type="submit" name="btnDelete">Xóa</button>
+                        </form>
+                    </td>
                 </tr>
                 <?php
                     }
                 }
+                else {
+                    $sql = "SELECT * FROM users WHERE role = '1'";
+                    $result = mysqli_query($conn, $sql);
+                    if (mysqli_num_rows($result) > 0) {
+                    // Hiển thị danh sách hội viên
+                    while ($row = mysqli_fetch_assoc($result)) {
+                    ?>
+
+                <tr>
+                    <td><?php echo $row['username']; ?></td>
+                    <td><img src="<?php echo $row['avatar_url']; ?>" alt="avatar"></td>
+                    <td><?php echo $row['name']; ?></td>
+                    <td><?php echo $row['gender']; ?></td>
+                    <td><?php echo $row['birth_year']; ?></td>
+                    <td><?php echo $row['hometown']; ?></td>
+                    <td><?php echo $row['role']; ?></td>
+                    <td>
+                        <form action="?page=list_member_Admin" method="post">
+                            <input type="hidden" name="usernameDelete" value="<?php echo $row['username'] ?>">
+                            <button class="button" type="submit" name="btnDeleteUser">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+                <?php
+                }
+            }
+        }
                 ?>
             </tbody>
         </table>
-
-        <!-- <div class="button-container">
-            <input type="hidden" name="statusEvaluation" value="Đã gửi">
-            <button name="sendEvaluation" type="submit" class="button">Gửi đánh giá</button>
-        </div> -->
     </form>
 </div>
 
 <?php 
-    if (isset($_POST['sendEvaluation'])) {
-        $evaluation_id = (int) sprintf('%u', hexdec(substr(uniqid(), 8, 13)));
-        $username = $_SESSION['user_name'];
-        $status = $_POST['statusEvaluation'];
-        $sql = "INSERT INTO evaluations (evaluation_id, username, status) values ('$evaluation_id', '$username', '$status')";
-        $re_insert_evaluation = $conn->query($sql);
-        if($re_insert_evaluation) {
-            for ($i = 0; $i < count($_POST['standard_id']); $i++) {
-                $standard_id = $_POST['standard_id'][$i];
-                $user_ratings = $_POST['user_ratings'][$i];
-                $sql = "INSERT INTO detail_evaluation (evaluation_id, standard_id, user_rating) values ('$evaluation_id', '$standard_id', '$user_ratings')";
-                $re_insert_detail_evaluation = $conn->query($sql);
-                }
-                if($re_insert_detail_evaluation) {
-                    echo "<script>
-                            alert('Send evaluation success');
-                            window.location = '?page=detail_table_evaluations';
-                        </script>";
-                }
-            }
+    if (isset($_POST['btnDelete'])) {
+        $usernameDelete = $_POST['usernameDelete'];
+        $evaluation_id = $_POST['evaluation_id'];
+        $sql_detail_evaluation = "DELETE FROM detail_evaluation WHERE evaluation_id = '$evaluation_id'";
+        $conn->query($sql_detail_evaluation);
+        $sql = "DELETE FROM evaluations WHERE evaluation_id = '$evaluation_id'";
+        $conn->query($sql);
+        $sql = "DELETE FROM users WHERE username = '$usernameDelete'";
+        $conn->query($sql);
+        echo "<script>
+                alert('Xóa thành công.');
+                window.location = '?page=list_member_Admin';
+            </script>";
+    }
+    elseif (isset($_POST['btnDeleteUser'])) {
+        $usernameDelete = $_POST['usernameDelete'];
+        $sql = "DELETE FROM users WHERE username = '$usernameDelete'";
+        $conn->query($sql);
+        echo "<script>
+                alert('Xóa thành công.');
+                window.location = '?page=list_member_Admin';
+            </script>";
     }
 ?>

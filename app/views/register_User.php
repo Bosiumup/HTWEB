@@ -55,8 +55,8 @@
 <?php
 if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["register"])) {
     $user_name = trim($_POST['username']);
-    $password = $_POST['pass'];
-    $confirm_password = $_POST['confirm-pass'];
+    $password = trim($_POST['pass']);
+    $confirm_password = trim($_POST['confirm-pass']);
     $name = trim($_POST['name-user']);
     $birth_year = trim($_POST['birth_year']);
     $hometown = trim($_POST['hometown']);

@@ -40,12 +40,12 @@ if (isset($_SESSION["user_name"])) {
 <?php
 if (isset($_SERVER["REQUEST_METHOD"]) && isset($_POST["login"])) {
     $user_name = trim($_POST['username']);
-    $password = $_POST['pass'];
+    $password = trim($_POST['pass']);
 
     // Kiểm tra xem các trường có được để trống hay không
     if(empty($user_name) || empty($password)){
         echo "<script>
-                alert('Vui lòng không bỏ trống các ô');
+                alert('Không bỏ trống các ô');
                 window.location = '?page=log_in_User';
             </script>"; 
     } else {

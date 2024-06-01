@@ -1,24 +1,36 @@
 <style>
 /* Thiết kế giao diện */
 .container {
-    max-width: 1500px;
-    padding: 20px;
+    width: 1000px;
+    max-width: 100%;
+    height: 100vh;
+    padding: 20px 0;
 }
 
-.list-quantity {
-    display: flex;
-    flex-direction: column;
+.container>span {
+    display: block;
+    font-size: large;
+    margin-bottom: 5px;
 }
 
-.list-quantity>* {
-    padding-bottom: 50px;
+.container>span span {
+    color: #fffa00;
 }
 
 h1 {
     font-weight: 500;
     text-align: center;
-    padding: 40px 0;
-    text-transform: Uppercase;
+    padding: 20px 0;
+}
+
+h2 {
+    margin-top: 20px;
+}
+
+.form-css {
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 20px;
 }
 
 table {
@@ -29,6 +41,10 @@ table {
     border-radius: 10px;
 }
 
+th {
+    font-size: large;
+}
+
 th,
 td {
     padding: 15px 20px;
@@ -36,14 +52,14 @@ td {
     border-bottom: 1px solid #ddd;
 }
 
+tr:last-child td {
+    border: 0;
+}
+
 td img {
     width: 70px;
     height: 70px;
     border-radius: 50%;
-}
-
-tr:last-child td {
-    border: 0;
 }
 
 .button-container {
@@ -58,6 +74,8 @@ tr:last-child td {
     border: 1px solid #45a049;
     cursor: pointer;
     font-size: 16px;
+    border-radius: 5px;
+    transition: all 0.1s linear;
 }
 
 .disabled {
@@ -67,7 +85,8 @@ tr:last-child td {
 }
 
 .button:hover {
-    background-color: #45a049;
+    opacity: 0.9 !important;
+    transform: scale(1.05);
 }
 
 .disabled:hover {
@@ -77,6 +96,25 @@ tr:last-child td {
 .select {
     padding: 0 10px;
     font-size: medium;
+    border-radius: 10px;
+}
+
+.button-disable {
+    background-color: #74b0e2;
+    border-color: #74b0e2;
+    font-size: small;
+    padding: 5px 10px !important;
+    height: unset !important;
+    margin: 0 !important;
+}
+
+.button-del {
+    background-color: #ff3131 !important;
+    border-color: #ff3131 !important;
+}
+
+.mb-0 {
+    margin-bottom: 0 !important;
 }
 </style>
 
@@ -93,6 +131,7 @@ tr:last-child td {
                         <th>Hình ảnh</th>
                         <th>Tên</th>
                         <th>Trạng thái</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -113,7 +152,12 @@ tr:last-child td {
                         <td><img src="<?php echo $row['avatar_url']; ?>" alt="avatar"></td>
                         <td><?php echo $row['name']; ?></td>
                         <td><?php echo $row['status']; ?></td>
-                        <td><button type="submit">Xóa</button></td>
+                        <td>
+                            <form action="?page=list_evaluation_Admin" method="post">
+                                <input type="hidden" name="evaluation_id" value="<?php echo $row['evaluation_id'] ?>">
+                                <button class="button" type="submit" name="btnDelete">Xóa</button>
+                            </form>
+                        </td>
                     </tr>
                     <?php
                     }
@@ -132,6 +176,7 @@ tr:last-child td {
                         <th>Hình ảnh</th>
                         <th>Tên</th>
                         <th>Trạng thái</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -152,7 +197,12 @@ tr:last-child td {
                         <td><img src="<?php echo $row['avatar_url']; ?>" alt="avatar"></td>
                         <td><?php echo $row['name']; ?></td>
                         <td><?php echo $row['status']; ?></td>
-                        <td><button type="submit">Xóa</button></td>
+                        <td>
+                            <form action="?page=list_evaluation_Admin" method="post">
+                                <input type="hidden" name="evaluation_id" value="<?php echo $row['evaluation_id'] ?>">
+                                <button class="button" type="submit" name="btnDelete">Xóa</button>
+                            </form>
+                        </td>
                     </tr>
                     <?php
                     }
@@ -171,6 +221,7 @@ tr:last-child td {
                         <th>Hình ảnh</th>
                         <th>Tên</th>
                         <th>Trạng thái</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -191,7 +242,12 @@ tr:last-child td {
                         <td><img src="<?php echo $row['avatar_url']; ?>" alt="avatar"></td>
                         <td><?php echo $row['name']; ?></td>
                         <td><?php echo $row['status']; ?></td>
-                        <td><button type="submit">Xóa</button></td>
+                        <td>
+                            <form action="?page=list_evaluation_Admin" method="post">
+                                <input type="hidden" name="evaluation_id" value="<?php echo $row['evaluation_id'] ?>">
+                                <button class="button" type="submit" name="btnDelete">Xóa</button>
+                            </form>
+                        </td>
                     </tr>
                     <?php
                     }
@@ -202,3 +258,17 @@ tr:last-child td {
         </div>
     </div>
 </div>
+
+<?php 
+    if (isset($_POST['btnDelete'])) {
+        $evaluation_id = $_POST['evaluation_id'];
+        $sql_detail_evaluation = "DELETE FROM detail_evaluation WHERE evaluation_id = '$evaluation_id'";
+        $conn->query($sql_detail_evaluation);
+        $sql = "DELETE FROM evaluations WHERE evaluation_id = '$evaluation_id'";
+        $conn->query($sql);
+        echo "<script>
+                alert('Xóa thành công.');
+                window.location = '?page=list_evaluation_Admin';
+            </script>";
+    }
+?>

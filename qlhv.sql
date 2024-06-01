@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 01, 2024 at 08:46 AM
+-- Generation Time: Jun 01, 2024 at 07:49 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -97,8 +97,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`public_id`, `avatar_url`, `username`, `password`, `name`, `gender`, `birth_year`, `hometown`, `role`) VALUES
-('', '', 'MinhThien', '$2y$10$8soJHFFjCy//BBUCdlBa3.XbWvm0SV/owaeBnNWKh.aOy7CEbave.', 'Lý Ngọc Minh Thiện', 'Male', 2003, 'Cần thơ', 0),
-('', '', 'test', '$2y$10$CGuq3DS8NOE11t.ZX.LvK.VN9n3W2ytnhZYAJcCvJobAAqZvZt6uS', 'test user', 'Nữ', 2003, 'Cần thơ', 1);
+('', '', 'admin', '$2y$10$8soJHFFjCy//BBUCdlBa3.XbWvm0SV/owaeBnNWKh.aOy7CEbave.', 'Lý Ngọc Minh Thiện', 'Male', 2003, 'Cần thơ', 0);
 
 --
 -- Indexes for dumped tables
@@ -147,19 +146,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `criteria`
 --
 ALTER TABLE `criteria`
-  MODIFY `criteria_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `criteria_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `detail_evaluation`
 --
 ALTER TABLE `detail_evaluation`
-  MODIFY `detail_evaluation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=253;
+  MODIFY `detail_evaluation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=276;
 
 --
 -- AUTO_INCREMENT for table `standards`
 --
 ALTER TABLE `standards`
-  MODIFY `standard_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `standard_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- Constraints for dumped tables
