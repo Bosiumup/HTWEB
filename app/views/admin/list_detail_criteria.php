@@ -133,13 +133,8 @@ tr:last-child td {
                 </label>
                 <label>
                     <span>Điểm tiêu chí</span>
-                    <select class="select" name="criteriaPoint">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
+                    <input type="number" name="criteriaPoint" class="select" max="<?php echo $standard_Point; ?>"
+                        min="1">
                 </label>
                 <button class="mb-0 button" name="criteriaAdd" type="submit">Thêm</button>
             </form>
@@ -182,8 +177,7 @@ tr:last-child td {
 
             <tr class="row-d">
                 <td style="text-align: justify;">
-                    <a
-                        href=""><?php echo '<span style="font-weight: 600;">Tiêu chí ' . $i . '</span>' . ". " . $criteria_row['criteria_name']; ?></a>
+                    <?php echo '<span style="font-weight: 600;">Tiêu chí ' . $i . '</span>' . ". " . $criteria_row['criteria_name']; ?>
                 </td>
                 <td><?php echo $criteria_row['points']; ?></td>
                 <td>
@@ -223,13 +217,8 @@ tr:last-child td {
                 </label>
                 <label>
                     <span>Điểm tiêu chuẩn</span>
-                    <select class="select" id="ctFormPoint" name="criteriaNewPoint">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
+                    <input type="number" id="ctFormPoint" name="criteriaNewPoint" class="select"
+                        max="<?php echo $standard_Point; ?>" min="1">
                 </label>
                 <button class="mb-0 button" name="criteriaUpdate" type="submit">Cập nhật</button>
             </form>
@@ -238,32 +227,53 @@ tr:last-child td {
 </div>
 
 <?php 
-    // ------------------ Thêm 
+    // Thêm tiêu chí mới
     if (isset($_POST['criteriaAdd'])) {
         $standardID = $_POST['standardID'];
         $criteriaName = trim($_POST['criteriaName']);
         $criteriaPoint = $_POST['criteriaPoint'];
+
+        // Kiểm tra nếu tên tiêu chí trống rỗng
         if(empty($criteriaName)) {
             echo "<script>
-                    alert('Không được để trống.');
+                    alert('Tên tiêu chí không được để trống.');
                     window.location = '?page=list_detail_criteria&standard_ID=$standardID';
                 </script>";
-        }
-        else {
-            $check_add = "SELECT * FROM criteria WHERE criteria_name = '$criteriaName'";
-            if($conn->query($check_add)->num_rows > 0) {
+        } else {
+            // Kiểm tra nếu tiêu chí đã tồn tại
+            $check_exist = "SELECT * FROM criteria WHERE criteria_name = '$criteriaName' AND standard_id = '$standardID'";
+            if($conn->query($check_exist)->num_rows > 0) {
                 echo "<script>
-                        alert('Đã có tiêu chí $criteriaName.');
-                        window.location = '?page=list_detail_criteria&standard_ID=$standardID';
-                    </script>";
-        }
-            else {
-                $sql = "INSERT INTO criteria (standard_id, criteria_name, points) values ('$standardID', '$criteriaName', '$criteriaPoint')";
-                $re_insert_evaluation = $conn->query($sql);
-                echo "<script>
-                        alert('Thêm thành công.');
-                        window.location = '?page=list_detail_criteria&standard_ID=$standardID';
-                    </script>";
+                    alert('Tiêu chí $criteriaName đã tồn tại.');
+                    window.location = '?page=list_detail_criteria&standard_ID=$standardID';
+                </script>";
+            } else {
+                // Chọn tổng số điểm từ tiêu chí nơi tiêu chí thuộc về standardID hiện tại
+                $sql_total = "SELECT SUM(points) as total_points FROM criteria WHERE standard_id = '$standardID';";
+                $result_total = $conn->query($sql_total);
+                $data_total = mysqli_fetch_assoc($result_total);
+                $total_points = $data_total['total_points'] + $criteriaPoint;
+
+                // Lấy điểm tối đa của standard
+                $sql_max = "SELECT points FROM standards WHERE standard_id = '$standardID';";
+                $result_max = $conn->query($sql_max);
+                $data_max = mysqli_fetch_assoc($result_max);
+                $max_point = $data_max['points'];
+
+                // Kiểm tra nếu tổng số điểm vượt quá standard
+                if ($total_points > $max_point) {
+                    echo "<script>
+                            alert('Tổng số điểm của các tiêu chí không được vượt quá số điểm của tiêu chuẩn!');
+                            window.location = '?page=list_detail_criteria&standard_ID=$standardID';
+                        </script>";
+                } else {
+                    $sql = "INSERT INTO criteria (criteria_name, points, standard_id) VALUES ('$criteriaName', '$criteriaPoint', '$standardID')";
+                    $conn->query($sql);
+                    echo "<script>
+                            alert('Thêm tiêu chí mới thành công.');
+                            window.location = '?page=list_detail_criteria&standard_ID=$standardID';
+                        </script>";
+                }
             }
         }
     }
@@ -274,20 +284,48 @@ tr:last-child td {
         $standardOldID = $_POST['standardOldID'];
         $criteriaNewName = trim($_POST['criteriaNewName']);
         $criteriaNewPoint = $_POST['criteriaNewPoint'];
-        $check_update = "SELECT * FROM criteria WHERE criteria_name = '$criteriaNewName' AND standard_id = '$standardOldID' AND criteria_id != '$criteriaOldID'";
-        if($conn->query($check_update)->num_rows > 0) {
+    
+        // Check if criteria name is empty
+        if(empty($criteriaNewName)) {
             echo "<script>
+                    alert('Không được để trống tên tiêu chí.');
+                    window.location = '?page=list_detail_criteria&standard_ID=$standardOldID';
+                </script>";
+        } else {
+            $check_update = "SELECT * FROM criteria WHERE criteria_name = '$criteriaNewName' AND standard_id = '$standardOldID' AND criteria_id != '$criteriaOldID'";
+            if($conn->query($check_update)->num_rows > 0) {
+                echo "<script>
                     alert('Đã có tiêu chí $criteriaNewName.');
                     window.location = '?page=list_detail_criteria&standard_ID=$standardOldID';
-                </script>";
-        }
-        else {
-            $sql = "UPDATE criteria SET criteria_name = '$criteriaNewName', points = '$criteriaNewPoint' WHERE criteria_id = '$criteriaOldID'";
-            $conn->query($sql);
-            echo "<script>
-                    alert('Cập nhật thành công.');
-                    window.location = '?page=list_detail_criteria&standard_ID=$standardOldID';
-                </script>";
+                    </script>";
+            } else {
+                // Select total points from criteria where the criteria belongs to the current standardID, excluding the current criteria
+                $sql_total = "SELECT SUM(points) as total_points FROM criteria WHERE standard_id = '$standardOldID' AND criteria_id != '$criteriaOldID';";
+                $result_total = $conn->query($sql_total);
+                $data_total = mysqli_fetch_assoc($result_total);
+                $total_points = $data_total['total_points'] + $criteriaNewPoint;
+    
+                // Get the maximum point of the standard
+                $sql_max = "SELECT points FROM standards WHERE standard_id = '$standardOldID';";
+                $result_max = $conn->query($sql_max);
+                $data_max = mysqli_fetch_assoc($result_max);
+                $max_point = $data_max['points'];
+    
+                // Check if total points exceed the standard
+                if ($total_points > $max_point) {
+                    echo "<script>
+                            alert('Tổng số điểm cho các tiêu chí vượt quá giới hạn của tiêu chuẩn!');
+                            window.location = '?page=list_detail_criteria&standard_ID=$standardOldID';
+                          </script>";
+                } else {
+                    $sql = "UPDATE criteria SET criteria_name = '$criteriaNewName', points = '$criteriaNewPoint' WHERE criteria_id = '$criteriaOldID'";
+                    $conn->query($sql);
+                    echo "<script>
+                            alert('Cập nhật thành công.');
+                            window.location = '?page=list_detail_criteria&standard_ID=$standardOldID';
+                        </script>";
+                }
+            }
         }
     }
     

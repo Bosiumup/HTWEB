@@ -120,6 +120,7 @@ td img {
 
 <div class="container">
     <h1>Danh sách đánh giá tiêu chuẩn</h1>
+    <a class="button" href="admin.php">Trang chủ</a>
     <div class="list-quantity">
         <div class="pass">
             <h2>Danh sách đã gửi (cần đánh giá)</h2>

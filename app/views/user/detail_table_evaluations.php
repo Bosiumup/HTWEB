@@ -167,14 +167,8 @@ tr:last-child td {
                     <td>
                         <input type="hidden" name="standard_id[]" value="<?php echo $criteria_row['standard_id']; ?>">
                         <input type="hidden" name="criteria_id[]" value="<?php echo $criteria_row['criteria_id']; ?>">
-                        <select class="select" name="user_ratings[]" required>
-                            <option value="">Chọn điểm</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
+                        <input class="select" type="number" name="user_ratings[]"
+                            max="<?php echo $criteria_row['points']; ?>" min="0">
                     </td>
                     <td></td>
                 </tr>
@@ -209,6 +203,7 @@ tr:last-child td {
             <?php
     }
     ?>
+            <a class="button" href="user.php">Trang chủ</a>
         </div>
     </form>
 </div>

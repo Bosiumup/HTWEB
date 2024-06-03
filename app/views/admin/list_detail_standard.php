@@ -124,7 +124,7 @@ tr:last-child td {
                 </label>
                 <label>
                     <span>Điểm tiêu chuẩn</span>
-                    <input class="readonly" type="text" name="standardPoint" value="10" readonly>
+                    <input class="select" type="number" name="standardPoint" max="100" min="1">
                 </label>
                 <button class="mb-0 button" name="standardAdd" type="submit">Thêm</button>
             </form>
@@ -221,14 +221,27 @@ tr:last-child td {
                         alert('Đã có tiêu chuẩn $standardName.');
                         window.location = '?page=list_detail_standard';
                     </script>";
-        }
-            else {
-                $sql = "INSERT INTO standards (standard_name, points) values ('$standardName', '$standardPoint')";
-                $re_insert_evaluation = $conn->query($sql);
-                echo "<script>
-                        alert('Thêm thành công.');
-                        window.location = '?page=list_detail_standard';
-                    </script>";
+            } else {
+                // Kiểm tra tổng điểm của tất cả tiêu chuẩn
+                $total_standard_points_sql = "SELECT SUM(points) as total_points FROM standards";
+                $total_standard_point_result = $conn->query($total_standard_points_sql);
+                $total_standard_point_row = mysqli_fetch_assoc($total_standard_point_result);
+                $total_standard_points = $total_standard_point_row['total_points'] + $standardPoint;
+
+                // Kiểm tra nếu tổng điểm vượt quá 100
+                if ($total_standard_points > 100) {
+                    echo "<script>
+                            alert('Tổng số điểm của các tiêu chuẩn không được vượt quá 100 điểm!');
+                            window.location = '?page=list_detail_standard';
+                        </script>";
+                } else {
+                    $sql = "INSERT INTO standards (standard_name, points) values ('$standardName', '$standardPoint')";
+                    $re_insert_evaluation = $conn->query($sql);
+                    echo "<script>
+                            alert('Thêm thành công.');
+                            window.location = '?page=list_detail_standard';
+                        </script>";
+                }
             }
         }
     }
@@ -237,21 +250,40 @@ tr:last-child td {
     if (isset($_POST['standardUpdate'])) {
         $standardNID = $_POST['standardNID'];
         $standardNewName = $_POST['standardNewName'];
-        $standardNewPoint = $_POST['standardNewPoint'];
+        $standardNewPoint = (int)$_POST['standardNewPoint'];
         $check_update = "SELECT * FROM standards WHERE standard_name = '$standardNewName' AND standard_id != '$standardNID'";
         if($conn->query($check_update)->num_rows > 0) {
             echo "<script>
                     alert('Đã có tiêu chuẩn $standardNewName.');
                     window.location = '?page=list_detail_standard';
                 </script>";
-        }
-        else {
-            $sql = "UPDATE standards SET standard_name = '$standardNewName', points = '$standardNewPoint' WHERE standard_id = '$standardNID'";
-            $conn->query($sql);
-            echo "<script>
-                    alert('Cập nhật thành công.');
-                    window.location = '?page=list_detail_standard';
-                </script>";
+        } else {
+            // Lấy điểm của tiêu chuẩn hiện tại
+            $current_standard_points_sql = "SELECT points FROM standards WHERE standard_id = '$standardNID'";
+            $current_standard_point_result = $conn->query($current_standard_points_sql);
+            $current_standard_point_row = mysqli_fetch_assoc($current_standard_point_result);
+            $current_standard_point = $current_standard_point_row['points'];
+
+            // Tính tổng điểm của tất cả tiêu chuẩn
+            $total_standard_points_sql = "SELECT SUM(points) as total_points FROM standards";
+            $total_standard_point_result = $conn->query($total_standard_points_sql);
+            $total_standard_point_row = mysqli_fetch_assoc($total_standard_point_result);
+            $total_standard_points = $total_standard_point_row['total_points'] - $current_standard_point + $standardNewPoint;
+
+            // Kiểm tra nếu tổng điểm vượt quá 100
+            if ($total_standard_points > 100) {
+                echo "<script>
+                        alert('Tổng số điểm của các tiêu chuẩn không được vượt quá 100 điểm!');
+                        window.location = '?page=list_detail_standard';
+                    </script>";
+            } else {
+                $sql = "UPDATE standards SET standard_name = '$standardNewName', points = '$standardNewPoint' WHERE standard_id = '$standardNID'";
+                $conn->query($sql);
+                echo "<script>
+                        alert('Cập nhật thành công.');
+                        window.location = '?page=list_detail_standard';
+                    </script>";
+            }
         }
     }
     

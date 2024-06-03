@@ -53,12 +53,6 @@ tr:last-child td {
     margin-top: 20px;
 }
 
-.button-container a {
-    margin-right: 10px;
-    background-color: #fff;
-    padding: 10px 20px;
-}
-
 .button-container a:hover {
     opacity: 0.9;
 }
@@ -128,7 +122,6 @@ tr:last-child td {
         method="post">
         <input type="hidden" name="statusEvaluationPass" value="Đã đánh giá">
         <select class="select" name="pass" required>
-            <option>Chọn điểm</option>
             <option value="Đạt">Đạt</option>
             <option value="Không đạt">Không đạt</option>
         </select>
@@ -213,14 +206,8 @@ tr:last-child td {
                             elseif($criteria_row['status'] == 'Đã gửi') {
                                 ?>
                         <input type="hidden" name="criteria_id[]" value="<?php echo $criteria_row['criteria_id']; ?>">
-                        <select class="select" name="admin_ratings[]" required>
-                            <option value="">Chọn điểm</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
+                        <input type="number" name="admin_ratings[]" class="select"
+                            max="<?php echo $criteria_row['points']; ?>" min="0">
                         <?php
                             }
                         ?>
@@ -244,7 +231,6 @@ tr:last-child td {
             <?php
     if ($get_status == 'Đã đánh giá' || $get_status == 'Chờ kết quả') {
             ?>
-            <a href="?page=list_evaluation_Admin">Về trang quản lý danh sách đánh giá</a>
             <button name="sendEvaluation" type="submit" class="button disabled" disabled>Gửi đánh giá</button>
             <?php
         
@@ -256,6 +242,7 @@ tr:last-child td {
             <?php
     }
     ?>
+            <a class="button" href="?page=list_evaluation_Admin">Về trang quản lý danh sách đánh giá</a>
         </div>
     </form>
 </div>
